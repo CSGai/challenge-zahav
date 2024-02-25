@@ -1,0 +1,21 @@
+py interp: '.\backend\.venv\Scripts\python.exe'
+USING:
+    /LANG:
+        -Python (3.12)
+        -JavaScript (ES6)
+    /FRAMEWORK:
+        -fastAPI (0.109.2)
+        -Vue.js (3.4.19)
+
+File System:
+    /backend:
+        /.venv {env stuff}
+        /src:
+            /services:
+                -sql_manager.py
+                -physics_calc.py
+                -weatherAPI_wrapper.py
+            /controllers:
+                controllers...
+        -backend.py
+    /frontend:

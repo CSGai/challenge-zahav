@@ -1,0 +1,46 @@
+Step-1:
+    /Q-A:
+
+        1)  Test the algorithm against a known set of inputs and outputs to confirm the service does not break
+            and returns the correct values.
+
+        2)  Make sure to handle edge cases so that human error (or malice) does not break the program.
+
+        3)  Peer review to ensure the code works and edge cases are handled correctly.
+
+        4)  Track units of mesurements and ensure conversions and equations utlize the correct units
+
+        Potential Edge Cases:
+            1)
+            -Edge Case:
+                Handling of incorrect inputs such as letters or special characters instead of numbers into the formula.
+            -Solution: 
+                Confirm correct typing and raise error if not.
+            
+            2)
+            -Edge Case:
+                Values in input that break the equations (negative mass, mass=0)
+            -Solution:
+                Handle Negative numbers either by absoluting them, or returning an error message, or both.
+                for m=0 raise an error message
+
+            4)
+            -Edge Case:
+                Results out of required range
+            -Solution:
+                return appropriate message and the extra weight needed to be destroyed
+            
+            5)
+            -Edge Case:
+                Rounding Errors
+            -Solution:
+                Ensure there are no unnecessary rounding as part of the code especially when handling division and multiplication
+            
+    /Bonus-Q-A:
+        You may improve this model by including friction with the air and ground in the calculations,
+        and accounting for different kinds of weather that may strongly and unexpectdly affect the accuracy
+        of the prediction made by the algorithm (strong bursts of winds in unexpected directions caused by
+        a storm for example).
+
+        Additionally, adding the angle of the takeoff and wind,
+        coupled with the aircraft's aerodynamic structure will help improve accuracy greatly.

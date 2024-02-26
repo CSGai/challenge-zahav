@@ -16,7 +16,7 @@ calc = Calculator()
 units = calc.units_of_mesurement
 
 
-@router.post("/calculator/timeANDdistance")
+@router.post("/Calculator")
 async def time_and_distance(request: Request):
 
     try:

@@ -58,5 +58,5 @@ class SQLmanager:
 
 
 # sql = SQLmanager('../../../zahav.db')
-# sql.remove_row('calc_results', 5)
+# sql.remove_row('calc_results', 10)
 

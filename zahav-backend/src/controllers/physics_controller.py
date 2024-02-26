@@ -1,3 +1,5 @@
+import math
+
 from fastapi import APIRouter, Request, HTTPException
 from src.services.physics_calculator.physics_calc import Calculator
 from src.services.sql.sql_wrapper import SQLmanager
@@ -28,13 +30,8 @@ async def time_and_distance(request: Request):
         if payload_mass is None:
             raise HTTPException(status_code=400, detail="Payload Mass is Missing")
 
-        if not isinstance(payload_mass, (int, float)):
-            raise HTTPException(status_code=400, detail="Payload Mass Must be a Number")
-
-        payload_mass = float(payload_mass)
-
         if payload_mass <= 0:
-            raise HTTPException(status_code=400, detail="Payload Mass Cannot Be Negative")
+            raise HTTPException(status_code=400, detail="Payload Mass Cannot Be 0 or Negative")
 
         # extract aircraft known properties
         aircraft_mass = known_prop['mass']['value']
@@ -64,6 +61,7 @@ async def time_and_distance(request: Request):
 
             # return final results
             return {
+                'sub60': 1,
                 'takeoff_distance': {'value': takeoff_distance, 'unit': units['distance']},
                 'takeoff_time': {'value': time, 'unit': units['time']}
             }
@@ -82,8 +80,12 @@ async def time_and_distance(request: Request):
             sql.insert_row('calc_results', insert_data)
 
             # return final results
-            return {'extra_weight': excess_mass, 'unit': units['mass']}
+            return {'value': excess_mass, 'unit': units['mass']}
 
     # handle unexpected internal exceptions
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+

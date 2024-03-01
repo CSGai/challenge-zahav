@@ -19,3 +19,14 @@ File System:
                 controllers...
         -backend.py
     /frontend:
+        /public
+        /src:
+            /assets
+            /components:
+                /bod:
+                    Calculator.vue
+                    Weather.vue
+                RootComp.vue
+                HeadLines.vue
+            -main.ts
+        -index.html

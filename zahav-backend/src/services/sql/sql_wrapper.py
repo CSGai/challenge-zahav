@@ -39,7 +39,7 @@ class SQLmanager:
         self.cursor.execute(f"DELETE from {table_name} WHERE {condition}", (ID,))
         self.conn.commit()
 
-    def show_table(self, table_name: str):
+    def show_table(self, table_name: str) -> list:
         """
         returns the table contents as a row per slot in a list
 

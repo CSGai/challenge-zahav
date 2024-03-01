@@ -2,7 +2,7 @@ from uvicorn import run
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from src.controllers.physics_controller import router as pys_router
+from src.controllers.flight_controller import router as pys_router
 from src.controllers.root_controller import router as root_router
 
 # initialization

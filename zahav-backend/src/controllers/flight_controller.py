@@ -1,24 +1,52 @@
-import math
+import json
 
 from fastapi import APIRouter, Request, HTTPException
+
 from src.services.physics_calculator.physics_calc import Calculator
+
 from src.services.sql.sql_wrapper import SQLmanager
+from src.services.weather_wrapper.weatherAPI_wapper import WeatherAPI
 
-router = APIRouter()
 
+# init params
+db = 'zahav.db'
+coords = (30, 35)
 known_prop = {
     'velocity': {'value': 140, 'unit': 'meters/second'},
     'motor_force': {'value': 100000, 'unit': 'newton'},
     'mass': {'value': 35000, 'unit': 'kg'}
 }
 
+
 # initialize
-sql = SQLmanager('zahav.db')
+weather = WeatherAPI(coords)
+sql = SQLmanager(db)
+router = APIRouter()
 calc = Calculator()
+
 units = calc.units_of_mesurement
 
 
-@router.post("/Calculator")
+@router.post("/api/weather")
+async def flight_weather(request: Request):
+    try:
+        # get request data
+        data = await request.json()
+        date = await weather.process_date(data['date'])
+
+        await weather.set_datetime(date)
+        weather_state = weather.get_weather()
+
+        res = json.dumps(await weather_state, indent=2)
+        print(res)
+        return res
+
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/api/calculator")
 async def time_and_distance(request: Request):
 
     try:
@@ -87,5 +115,4 @@ async def time_and_distance(request: Request):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 

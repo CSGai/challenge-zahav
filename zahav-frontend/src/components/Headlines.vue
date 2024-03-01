@@ -7,13 +7,14 @@
 
 <style scoped>
     main {
-        position: absolute;
-        top: 20px;
-        left: 20px;
+        position: relative;
+        top: 2%;
+        left: 1%;
+        max-width:fit-content;
         color: aliceblue;
         border: 2px solid aliceblue;
         border-radius: 20px;
-        padding: 20px;
+        padding: 15px;
         background-color: rgb(56, 56, 56);
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
@@ -22,4 +23,19 @@
         border: 3px solid aliceblue;;
         border-color: white;
     }
+    main h3 {
+        color:gold;
+        animation: glint 4s infinite;
+    }
+    @keyframes glint {
+    0% {
+      text-shadow: 0 0 5px gold;
+    }
+    50% {
+      text-shadow: 0 0 20px gold;
+    }
+    100% {
+      text-shadow: 0 0 5px gold;
+    }
+  }
 </style>

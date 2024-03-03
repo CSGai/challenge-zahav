@@ -45,12 +45,13 @@ class WeatherAPI:
         """
         self.longitude, self.latitude = new_coordinates
 
-    async def get_weather(self) -> dict:
+    async def approved_takeoff_hours(self, temper_limits: tuple) -> list:
         """
         gets the weather in the set coordinates and date
-
-        :return: info from the weather api
+        :param temper_limits: a tuple containing the min and max temperatures for an approved takeoff
+        :return: when the aircraft can take off
         """
+        min_temp, max_temp = temper_limits
 
         focus_date = self.date_time.date()
         cur_date = datetime.now().date()
@@ -68,29 +69,45 @@ class WeatherAPI:
         else:
             url = self.url_templates[2].format(self.latitude, self.longitude)
 
-        print(url)
-
-        # write data handling logic for the 3 instances.
-
         async with httpx.AsyncClient() as client:
-            response = await client.get(url)
-            return response.json()
+            try:
+                takeoff_hours = []
+                response = await client.get(url)
+
+                # hourly: {time: list, temperature_2m: list}
+                res = response.json()['hourly']
+                temper_list = res['temperature_2m']
+                datetime_list = res['time']
+                date_list = [(await self.process_date(date[:date.find('T')])).date() for date in datetime_list]
+                time_list = [time[time.find('T') + 1:] for time in datetime_list]
+
+                for index in range(len(date_list)):
+                    if date_list[index] == focus_date:
+                        if max_temp > temper_list[index] > min_temp:
+                            takeoff_hours.append(time_list[index])
+
+                return takeoff_hours
+
+            except Exception as e:
+                e = str(e)
+                if 'hourly' in e:
+                    print('error: date out of meteo api range (too far in the future)')
+                else:
+                    print('error:', e)
 
     @staticmethod
     async def process_date(date: str):
         """
-        converts date as string to a date object
+        converts date as string to a datetime object
         :param date:
         :return: date object
         """
         return datetime.strptime(date, '%Y-%m-%d')
 
 
-async def test_runner():
-    weather = WeatherAPI((30, 35))
-    await weather.set_datetime(datetime(2023, 1, 1, 15, 11, 0))
-    res = json.dumps(await weather.get_weather(), indent=2)
-    print(res)
-
-
-asyncio.run(test_runner())
+# async def test_runner():
+#     weather = WeatherAPI((30, 35))
+#     await weather.set_datetime(datetime(2015, 12, 5, 15, 11, 0))
+#     print(await weather.approved_takeoff_hours((15, 35)))
+#
+# asyncio.run(test_runner())

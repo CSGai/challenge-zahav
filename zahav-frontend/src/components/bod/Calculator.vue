@@ -63,6 +63,7 @@
         </div>
       </form>
     </div>
+    <br>
     <div class="calc-display" v-if="submitted">
       <p v-text="res"></p>
       <p v-text="res2"></p>
@@ -74,7 +75,7 @@
   main {
     height: max-content;
     color: aliceblue;
-    border: 2px solid aliceblue;
+    border: 1px solid aliceblue;
     border-radius: 20px;
     padding: 20px;
     background: linear-gradient(100deg, rgba(55, 55, 55, 0.016), #ac9011);

@@ -35,11 +35,13 @@ async def flight_weather(request: Request):
         date = await weather.process_date(data['date'])
 
         await weather.set_datetime(date)
-        weather_state = weather.get_weather()
+        weather_state = weather.approved_takeoff_hours((15, 35))
 
-        res = json.dumps(await weather_state, indent=2)
-        print(res)
-        return res
+        res = await weather_state
+        if res:
+            return res
+        else:
+            raise 'you may not take off in the chosen date due to the weather'
 
     except Exception as e:
         print(e)

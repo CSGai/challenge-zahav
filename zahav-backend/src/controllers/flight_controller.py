@@ -38,10 +38,13 @@ async def flight_weather(request: Request):
         weather_state = weather.approved_takeoff_hours((15, 35))
 
         res = await weather_state
-        if res:
-            return res
+        if res is not None:
+            if len(res) > 0:
+                return res
+            else:
+                raise HTTPException(status_code=400, detail='you may not take-off in the chosen date due to the weather')
         else:
-            raise 'you may not take off in the chosen date due to the weather'
+            raise HTTPException(status_code=400, detail='date out of meteo api range')
 
     except Exception as e:
         print(e)

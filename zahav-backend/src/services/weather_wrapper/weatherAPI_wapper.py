@@ -45,7 +45,7 @@ class WeatherAPI:
         """
         self.longitude, self.latitude = new_coordinates
 
-    async def approved_takeoff_hours(self, temper_limits: tuple) -> list:
+    async def approved_takeoff_hours(self, temper_limits: tuple):
         """
         gets the weather in the set coordinates and date
         :param temper_limits: a tuple containing the min and max temperatures for an approved takeoff
@@ -89,11 +89,8 @@ class WeatherAPI:
                 return takeoff_hours
 
             except Exception as e:
-                e = str(e)
-                if 'hourly' in e:
-                    print('error: date out of meteo api range (too far in the future)')
-                else:
-                    print('error:', e)
+                print('error:', e)
+                return None
 
     @staticmethod
     async def process_date(date: str):

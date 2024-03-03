@@ -28,13 +28,14 @@
           })
           .then(data => {
             console.log('You may take off at:', data);
-            this.res = 'you may take-off at the following hours:'
+            this.res = 'you may take-off at the following hours:';
             data.forEach((element: string) => {
               this.res += ' ' + element;
             });
           })
           .catch(async (error) => {
             console.error('Error:', await error.detail);
+            this.res = error.detail.replace('400:', '');
           });
         console.log('Form submitted!', this.formData);
         this.submitted = true;
@@ -86,8 +87,6 @@
 
   .response {
     display: inline-block;
-    /* Display the response as an inline block */
     margin-top: 10px;
-    /* Add margin to separate from the input */
   }
 </style>
